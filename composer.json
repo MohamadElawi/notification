@@ -1,0 +1,37 @@
+{
+    "name": "mhd-elawi/notification",
+    "description": "A notification package for Laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mohamad Elawi",
+            "email": "mohamad.elawi@gmail.com",
+            "role": "Developer"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": {
+            "MhdElawi\\Notification\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MhdElawi\\Notification\\NotificationServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "illuminate/support": "^10.0|^11.0" ,
+        "astrotomic/laravel-translatable": "^11.12" ,
+        "google/auth": "^1.41"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require-dev": {
+        "orchestra/testbench": "^9.8"
+    }
+}
