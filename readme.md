@@ -183,7 +183,7 @@ Notification::for($users)
 ```
 
 #### Notification with Related Data
-The related model in notifications allows associating a notification with a specific entity (e.g., a Post, Order, or Comment). This is achieved through a morph relationship in the notification model. When sending a notification, the related model's type (model_type) and ID (model_id) are included in the Firebase notification payload, allowing the frontend to handle and display notifications dynamically.
+The related model in notifications allows associating a notification with a specific entity (e.g., a Post, Order, or Comment). This is achieved through a morph relationship in the notification model. When sending a notification, the related model's type (related_type) and ID (related_id) are included in the Firebase notification payload, allowing the frontend to handle and display notifications dynamically.
 
 How It Works:
 Morph Relationship in Notification Model
