@@ -114,7 +114,7 @@ class Notification extends AbstractNotification
      *
      * @return bool
      */
-    public function checkSaveNotificationIsEnabled(): bool
+    protected function checkSaveNotificationIsEnabled(): bool
     {
         return $this->saveNotification && $this->config['save_notifications'];
     }
@@ -124,7 +124,7 @@ class Notification extends AbstractNotification
      *
      * @return bool
      */
-    public function checkSendNotificationIsEnabled(): bool
+    protected function checkSendNotificationIsEnabled(): bool
     {
         return $this->sendNotification && $this->config['send_notifications'] == true;
     }

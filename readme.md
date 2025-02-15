@@ -19,6 +19,7 @@
    - [Sending Notifications](#sending-notifications)
    -  - [Implementing HasNotification](#implementing-hasnotification)
    - [Disabling Persistence](#disabling-persistence)
+   - [Disabling Notification](#disabling-notification)
    - [Advanced Configuration](#advanced-configuration)
 6. [Contributing](#contributing)
 
@@ -107,7 +108,7 @@ Define the list of supported languages:
 By default, notifications are saved to the database:
 
 ```php
-'save_notifications' => true, // Set to false to disable
+'save_notifications' => true, // Set false to disable
 ```
 
 ### Firebase Configuration
@@ -135,7 +136,7 @@ FIREBASE_PROJECT_ID=your-project-id
 Enable Firebase notifications in the configuration file:
 
 ```php
-'send_notifications_via_firebase' => true,
+'send_notifications' => true,
 ```
 
 ---
@@ -147,12 +148,12 @@ Enable Firebase notifications in the configuration file:
 #### Single User Notification
 
 ```php
-use MhdElawi\Notification\Services\Notification;
+use MhdElawi\Notification\Utils\Notification;
 
 Notification::for($user)
     ->setTitle('Hello, World!')
     ->setBody('This is a test notification.')
-    ->sendNotification();
+    ->send();
 ```
 
 #### Multi-Language Notification
@@ -161,7 +162,7 @@ Notification::for($user)
 Notification::for($user)
     ->setTitle('Bonjour, Monde!', 'fr')
     ->setBody('Ceci est une notification de test.', 'fr')
-    ->sendNotification();
+    ->send();
 ```
 
 #### Multi-Language Notifications :
@@ -169,7 +170,7 @@ Notification::for($user)
     Notification::for($user)
     ->setTitleWithTranslation('notification.title', ['name' => $user->name])
     ->setBodyWithTranslation('notification.body', ['name' => $user->name])
-    ->sendNotification();
+    ->send();
 ```
 
 #### Batch Notification
@@ -178,10 +179,21 @@ Notification::for($user)
 Notification::for($users)
     ->setTitle('Batch Notification')
     ->setBody('This notification is sent to multiple users.')
-    ->sendNotification();
+    ->send();
 ```
 
 #### Notification with Related Data
+The related model in notifications allows associating a notification with a specific entity (e.g., a Post, Order, or Comment). This is achieved through a morph relationship in the notification model. When sending a notification, the related model's type (model_type) and ID (model_id) are included in the Firebase notification payload, allowing the frontend to handle and display notifications dynamically.
+
+How It Works:
+Morph Relationship in Notification Model
+The notification system supports polymorphic relations, meaning a notification can be associated with any model (e.g., Post, Order, User).
+
+Sending Related Model in Firebase Payload
+
+When a related model is assigned, its model type and model ID are sent as part of the Firebase notification payload.
+This allows the frontend to recognize which entity the notification refers to and navigate users to the appropriate screen.
+
 
 ```php
 $relatedModel = Post::query()->first();
@@ -190,7 +202,7 @@ Notification::for($user, $relatedModel)
     ->setTitle('New Comment on Your Post')
     ->setBody('Someone has commented on your post.')
     ->setIcon('comment-icon')
-    ->sendNotification();
+    ->send();
 ```
 
 Alternatively, you can use setRelatedModel() to assign the related model separately:
@@ -202,7 +214,7 @@ Notification::for($user)
 ->setTitle('New Comment on Your Post')
 ->setBody('Someone has commented on your post.')
 ->setIcon('comment-icon')
-->sendNotification();
+->send();
 ```
 
 
@@ -215,7 +227,7 @@ Notification::for($user)
     ->setBody('Someone has commented on your post.')
     ->setIcon('comment-icon')
     ->setExtraFields(['sound' => 'something'])
-    ->sendNotification();
+    ->send();
 ```
 
 ---
@@ -250,20 +262,45 @@ class User extends Authenticatable implements HasNotification
 Notification::for($user)
     ->setTitle('Title')
     ->setBody('Body')
-    ->sendNotification(false);
+    ->send(false);
 ```
 
 ---
+
+### Disable Sending Notification 
+
+You can disable notifications for a specific notification or globally.
+#### Disable in Configuration
+
+```php
+'send_notifications' => false,
+```
+
+#### Disable for a Specific Notification
+ Use `disableSendNotification()` to prevent sending this specific notification.
+```php
+Notification::for($users)
+    ->setTitle('Hello, World!')
+    ->setBody('This is a test notification.')
+    ->disableSendNotification()
+    ->send();
+```
+
+
+
+
 
 ### Advanced Configuration
 
 #### Batch Processing
 
-Set the batch size in the configuration file:
+[comment]: <> (Set the batch size in the configuration file:)
 
-```php
-'batch_size' => 1000,
-```
+[comment]: <> (```php)
+
+[comment]: <> ('batch_size' => 1000,)
+
+[comment]: <> (```)
 
 #### Customize Table Names
 

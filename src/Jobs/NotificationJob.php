@@ -219,7 +219,8 @@ class NotificationJob implements ShouldQueue
         return [
             'click_action' => $this->firebaseConfig['click_action'] ?? '',
             'screen' => strtolower(class_basename($this->metadata['related_type'])),
-            'id' => (string) $this->metadata['related_id'],
+            'related_id' => (string) $this->metadata['related_id'],
+            'related_type' => (string) $this->metadata['related_type'],
         ];
     }
 
