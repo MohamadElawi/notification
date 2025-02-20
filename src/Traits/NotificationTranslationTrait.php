@@ -36,7 +36,7 @@ trait NotificationTranslationTrait
                 'notification_id' => $notification->id,
                 'locale' => $locale,
                 'title' => $message,
-                'body' => $body[$locale],
+                'body' => $body[$locale] ?? '',
             ];
         }
         return $data;

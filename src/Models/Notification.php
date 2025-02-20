@@ -66,7 +66,7 @@ class Notification extends Model implements TranslatableContract
      * @param mixed $user
      * @return Builder
      */
-    public function scopeBy(Builder $query, mixed $user): Builder
+    public function scopeFor(Builder $query, mixed $user): Builder
     {
         return $query->where('model_type', get_class($user))
             ->where('model_id', $user->id);
